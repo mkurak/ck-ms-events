@@ -2,14 +2,14 @@ import { ServiceContainer } from 'ck-ms-di';
 import { EventContainer, HandlerResponse } from '../src/EventContainer';
 
 describe('EventContainer', () => {
-    describe('Servis olarak kullanılmıyor olduğu durumlardaki testler', () => {
-        test('Bir olay eklenebilmeli.', () => {
+    describe('Tests when not used as a service', () => {
+        test('An event should be able to be added.', () => {
             const eventContainer = new EventContainer();
             eventContainer.addEvent({ event: 'test', subscribers: [] });
             expect(eventContainer.getEvent('test')).toBeDefined();
         });
 
-        test('Birden fazla olay eklenebilmeli.', () => {
+        test('Multiple events should be able to be added.', () => {
             const eventContainer = new EventContainer();
             eventContainer.addEvent({ event: 'test1', subscribers: [] });
             eventContainer.addEvent({ event: 'test2', subscribers: [] });
@@ -17,14 +17,14 @@ describe('EventContainer', () => {
             expect(eventContainer.getEvent('test2')).toBeDefined();
         });
 
-        test('Bir olay ve bir abone eklenebilmeli.', () => {
+        test('An event and a subscriber should be able to be added.', () => {
             const eventContainer = new EventContainer();
             eventContainer.addSubscriber('test', { callbackAsync: async () => {}, order: 1 });
             expect(eventContainer.getEvent('test')).toBeDefined();
             expect(eventContainer.getEvent('test')?.subscribers.length).toBe(1);
         });
 
-        test('Birden fazla olay ve her olaya birden fazla abone eklenebilmeli.', () => {
+        test('Multiple events and multiple subscribers for each event should be able to be added.', () => {
             const eventContainer = new EventContainer();
             eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 1 });
             eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 2 });
@@ -36,7 +36,7 @@ describe('EventContainer', () => {
             expect(eventContainer.getEvent('test2')?.subscribers.length).toBe(2);
         });
 
-        test('Birden fazla olay eklenebilmeli ve sonrasında içlerinden biri silinebilmeli.', () => {
+        test('Multiple events should be able to be added and then one of them should be able to be removed.', () => {
             const eventContainer = new EventContainer();
             eventContainer.addEvent({ event: 'test1', subscribers: [] });
             eventContainer.addEvent({ event: 'test2', subscribers: [] });
@@ -45,7 +45,7 @@ describe('EventContainer', () => {
             expect(eventContainer.getEvent('test2')).toBeDefined();
         });
 
-        test('Birden fazla olay ve her olaya birden fazla abone eklenebilmeli ve sonrasında içlerinden biri silinebilmeli.', () => {
+        test('Multiple events and multiple subscribers for each event should be able to be added and then one of them should be able to be removed.', () => {
             const eventContainer = new EventContainer();
             eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 1 });
             eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 2 });
@@ -56,7 +56,7 @@ describe('EventContainer', () => {
             expect(eventContainer.getEvent('test2')).toBeDefined();
         });
 
-        test('Birden fazla olay eklenebilmeli ve sonrasında her birine birden fazla abone eklenebilmeli. Sonrasında abonelerden bazıları silinebilmeli.', () => {
+        test('Multiple events should be able to be added and then multiple subscribers should be able to be added to each event. Then some of the subscribers should be able to be removed.', () => {
             const eventContainer = new EventContainer();
             eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 1 });
             eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 2 });
@@ -70,7 +70,7 @@ describe('EventContainer', () => {
             expect(eventContainer.getEvent('test2')?.subscribers.length).toBe(1);
         });
 
-        test('Bir olay eklenebilmeli ve bu olaya da birden fazla abone eklenebilmeli. Daha sonrasında da olay tetiklenmeli ve abonelerin çalıştığı kontrol edilmeli.', async () => {
+        test('An event should be able to be added and multiple subscribers should be able to be added to this event. Then the event should be triggered and it should be checked that the subscribers are working.', async () => {
             const eventContainer = new EventContainer();
             eventContainer.addSubscriber('test', {
                 callbackAsync: async (payload: HandlerResponse) => {
@@ -91,7 +91,7 @@ describe('EventContainer', () => {
             expect(payload.result).toBe('test - subscriber1 > test - subscriber2');
         });
 
-        test('Performans Testi: 1000 olay eklenmeli ve her bir olaya 1000 abone eklenmeli. Daha sonrasında da tüm olaylar aynı anda tetiklenmeli ve abonelerin çalıştığı kontrol edilmeli.', async () => {
+        test('Performance Test: 1000 events should be added and 1000 subscribers should be added to each event. Then all events should be triggered at the same time and it should be checked that the subscribers are working.', async () => {
             const eventContainer = new EventContainer();
             for (let i = 0; i < 1000; i++) {
                 eventContainer.addSubscriber(`test${i}`, {
@@ -117,8 +117,8 @@ describe('EventContainer', () => {
         }, 10000);
     });
 
-    describe('Servis olarak kullanılıyor olduğu durumlardaki testler', () => {
-        test('Bir olay eklenebilmeli.', () => {
+    describe('Tests when used as a service', () => {
+        test('An event should be able to be added.', () => {
             const serviceContainer = ServiceContainer.getInstance();
             const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
             eventContainer.addEvent({ event: 'test', subscribers: [] });
@@ -126,7 +126,7 @@ describe('EventContainer', () => {
             eventContainer.clear();
         });
 
-        test('Birden fazla olay eklenebilmeli.', () => {
+        test('Multiple events should be able to be added.', () => {
             const serviceContainer = ServiceContainer.getInstance();
             const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
             eventContainer.addEvent({ event: 'test1', subscribers: [] });
@@ -136,7 +136,7 @@ describe('EventContainer', () => {
             eventContainer.clear();
         });
 
-        test('Bir olay ve bir abone eklenebilmeli.', () => {
+        test('An event and a subscriber should be able to be added.', () => {
             const serviceContainer = ServiceContainer.getInstance();
             const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
             eventContainer.addSubscriber('test', { callbackAsync: async () => {}, order: 1 });
@@ -145,7 +145,7 @@ describe('EventContainer', () => {
             eventContainer.clear();
         });
 
-        test('Birden fazla olay ve her olaya birden fazla abone eklenebilmeli.', () => {
+        test('Multiple events and multiple subscribers for each event should be able to be added.', () => {
             const serviceContainer = ServiceContainer.getInstance();
             const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
             eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 1 });
@@ -159,7 +159,7 @@ describe('EventContainer', () => {
             eventContainer.clear();
         });
 
-        test('Birden fazla olay eklenebilmeli ve sonrasında içlerinden biri silinebilmeli.', () => {
+        test('Multiple events should be able to be added and then one of them should be able to be removed.', () => {
             const serviceContainer = ServiceContainer.getInstance();
             const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
             eventContainer.addEvent({ event: 'test1', subscribers: [] });
@@ -170,7 +170,7 @@ describe('EventContainer', () => {
             eventContainer.clear();
         });
 
-        test('Birden fazla olay ve her olaya birden fazla abone eklenebilmeli ve sonrasında içlerinden biri silinebilmeli.', () => {
+        test('Multiple events and multiple subscribers for each event should be able to be added and then one of them should be able to be removed.', () => {
             const serviceContainer = ServiceContainer.getInstance();
             const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
             eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 1 });
@@ -183,7 +183,7 @@ describe('EventContainer', () => {
             eventContainer.clear();
         });
 
-        test('Birden fazla olay eklenebilmeli ve sonrasında her birine birden fazla abone eklenebilmeli. Sonrasında abonelerden bazıları silinebilmeli.', () => {
+        test('Multiple events should be able to be added and then multiple subscribers should be able to be added to each event. Then some of the subscribers should be able to be removed.', () => {
             const serviceContainer = ServiceContainer.getInstance();
             const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
             eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 1 });
@@ -199,7 +199,7 @@ describe('EventContainer', () => {
             eventContainer.clear();
         });
 
-        test('Bir olay eklenebilmeli ve bu olaya da birden fazla abone eklenebilmeli. Daha sonrasında da olay tetiklenmeli ve abonelerin çalıştığı kontrol edilmeli.', async () => {
+        test('An event should be able to be added and multiple subscribers should be able to be added to this event. Then the event should be triggered and it should be checked that the subscribers are working.', async () => {
             const serviceContainer = ServiceContainer.getInstance();
             const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
             eventContainer.addSubscriber('test', {
@@ -222,7 +222,7 @@ describe('EventContainer', () => {
             eventContainer.clear();
         });
 
-        test('Performans Testi: 1000 olay eklenmeli ve her bir olaya 1000 abone eklenmeli. Daha sonrasında da tüm olaylar aynı anda tetiklenmeli ve abonelerin çalıştığı kontrol edilmeli.', async () => {
+        test('Performance Test: 1000 events should be added and 1000 subscribers should be added to each event. Then all events should be triggered at the same time and it should be checked that the subscribers are working.', async () => {
             const serviceContainer = ServiceContainer.getInstance();
             const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
             for (let i = 0; i < 1000; i++) {
