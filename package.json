@@ -1,6 +1,6 @@
 {
     "name": "ck-ms-events",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "This package enables managing all events within the API application. Unlike the standard event management method, it allows returning data from triggered events. Additionally, it includes a feature that allows one of the subscribers to block the process during the event. Moreover, if you are using the CraftoKit Microservice infrastructure, you can automatically detect and add subscribers to the desired event using a specially developed decorator, instead of manually adding subscriber methods. You can use this package not only in projects utilizing the microservice architecture built with the CraftoKit infrastructure, but also in any of your projects.",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
@@ -81,15 +81,18 @@
     "devDependencies": {
         "@types/jest": "^29.5.13",
         "@types/node": "^22.7.4",
+        "eslint": "^9.11.1",
+        "eslint-config-prettier": "^9.1.0",
         "jest": "^29.7.0",
         "jest-mock-extended": "^4.0.0-beta1",
+        "prettier": "^3.3.3",
         "ts-jest": "^29.2.5",
         "ts-node": "^10.9.2",
         "ts-node-dev": "^2.0.0",
         "typescript": "^5.6.2"
     },
     "dependencies": {
-        "ck-ms-di": "^1.0.1"
+        "ck-ms-di": "^1.0.2"
     },
     "repository": {
         "type": "git",
