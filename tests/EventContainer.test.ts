@@ -1,5 +1,7 @@
+import 'reflect-metadata';
 import { ServiceContainer } from 'ck-ms-di';
 import { EventContainer, HandlerResponse } from '../src/EventContainer';
+import { EventHandler } from '../src/decorators/EventHandler';
 
 describe('EventContainer', () => {
     describe('Tests when not used as a service', () => {
@@ -248,5 +250,23 @@ describe('EventContainer', () => {
             expect(payload.result).toBe(`test999 - subscriber1 > test999 - subscriber2`);
             eventContainer.clear();
         }, 10000);
+    });
+
+    describe('Decorator tests', () => {
+        test('An event should be subscribed using a decorator.', () => {
+            const serviceContainer = ServiceContainer.getInstance();
+            const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
+
+            class TestClass {
+                @EventHandler({ event: 'test' })
+                public async testHandler(payload: HandlerResponse): Promise<void> {
+                    payload.result = 'test - subscriber1';
+                }
+            }
+
+            expect(eventContainer.getEvent('test')).toBeDefined();
+            expect(eventContainer.getEvent('test')?.subscribers.length).toBe(1);
+            eventContainer.clear();
+        });
     });
 });
