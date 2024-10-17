@@ -120,97 +120,97 @@ describe('EventContainer', () => {
     });
 
     describe('Tests when used as a service', () => {
-        test('An event should be able to be added.', () => {
+        test('An event should be able to be added.', async () => {
             const serviceContainer = ServiceContainer.getInstance();
-            const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
-            eventContainer.addEvent({ event: 'test', subscribers: [] });
-            expect(eventContainer.getEvent('test')).toBeDefined();
-            eventContainer.clear();
+            const eventContainer = await serviceContainer.resolveAsync<EventContainer>(EventContainer);
+            eventContainer?.addEvent({ event: 'test', subscribers: [] });
+            expect(eventContainer?.getEvent('test')).toBeDefined();
+            eventContainer?.clear();
         });
 
-        test('Multiple events should be able to be added.', () => {
+        test('Multiple events should be able to be added.', async () => {
             const serviceContainer = ServiceContainer.getInstance();
-            const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
-            eventContainer.addEvent({ event: 'test1', subscribers: [] });
-            eventContainer.addEvent({ event: 'test2', subscribers: [] });
-            expect(eventContainer.getEvent('test1')).toBeDefined();
-            expect(eventContainer.getEvent('test2')).toBeDefined();
-            eventContainer.clear();
+            const eventContainer = await serviceContainer.resolveAsync<EventContainer>(EventContainer);
+            eventContainer?.addEvent({ event: 'test1', subscribers: [] });
+            eventContainer?.addEvent({ event: 'test2', subscribers: [] });
+            expect(eventContainer?.getEvent('test1')).toBeDefined();
+            expect(eventContainer?.getEvent('test2')).toBeDefined();
+            eventContainer?.clear();
         });
 
-        test('An event and a subscriber should be able to be added.', () => {
+        test('An event and a subscriber should be able to be added.', async () => {
             const serviceContainer = ServiceContainer.getInstance();
-            const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
-            eventContainer.addSubscriber('test', { callbackAsync: async () => {}, order: 1 });
-            expect(eventContainer.getEvent('test')).toBeDefined();
-            expect(eventContainer.getEvent('test')?.subscribers.length).toBe(1);
-            eventContainer.clear();
+            const eventContainer = await serviceContainer.resolveAsync<EventContainer>(EventContainer);
+            eventContainer?.addSubscriber('test', { callbackAsync: async () => {}, order: 1 });
+            expect(eventContainer?.getEvent('test')).toBeDefined();
+            expect(eventContainer?.getEvent('test')?.subscribers.length).toBe(1);
+            eventContainer?.clear();
         });
 
-        test('Multiple events and multiple subscribers for each event should be able to be added.', () => {
+        test('Multiple events and multiple subscribers for each event should be able to be added.', async () => {
             const serviceContainer = ServiceContainer.getInstance();
-            const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
-            eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 1 });
-            eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 2 });
-            eventContainer.addSubscriber('test2', { callbackAsync: async () => {}, order: 1 });
-            eventContainer.addSubscriber('test2', { callbackAsync: async () => {}, order: 2 });
-            expect(eventContainer.getEvent('test1')).toBeDefined();
-            expect(eventContainer.getEvent('test1')?.subscribers.length).toBe(2);
-            expect(eventContainer.getEvent('test2')).toBeDefined();
-            expect(eventContainer.getEvent('test2')?.subscribers.length).toBe(2);
-            eventContainer.clear();
+            const eventContainer = await serviceContainer.resolveAsync<EventContainer>(EventContainer);
+            eventContainer?.addSubscriber('test1', { callbackAsync: async () => {}, order: 1 });
+            eventContainer?.addSubscriber('test1', { callbackAsync: async () => {}, order: 2 });
+            eventContainer?.addSubscriber('test2', { callbackAsync: async () => {}, order: 1 });
+            eventContainer?.addSubscriber('test2', { callbackAsync: async () => {}, order: 2 });
+            expect(eventContainer?.getEvent('test1')).toBeDefined();
+            expect(eventContainer?.getEvent('test1')?.subscribers.length).toBe(2);
+            expect(eventContainer?.getEvent('test2')).toBeDefined();
+            expect(eventContainer?.getEvent('test2')?.subscribers.length).toBe(2);
+            eventContainer?.clear();
         });
 
-        test('Multiple events should be able to be added and then one of them should be able to be removed.', () => {
+        test('Multiple events should be able to be added and then one of them should be able to be removed.', async () => {
             const serviceContainer = ServiceContainer.getInstance();
-            const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
-            eventContainer.addEvent({ event: 'test1', subscribers: [] });
-            eventContainer.addEvent({ event: 'test2', subscribers: [] });
-            eventContainer.removeEvent('test1');
-            expect(eventContainer.getEvent('test1')).toBeUndefined();
-            expect(eventContainer.getEvent('test2')).toBeDefined();
-            eventContainer.clear();
+            const eventContainer = await serviceContainer.resolveAsync<EventContainer>(EventContainer);
+            eventContainer?.addEvent({ event: 'test1', subscribers: [] });
+            eventContainer?.addEvent({ event: 'test2', subscribers: [] });
+            eventContainer?.removeEvent('test1');
+            expect(eventContainer?.getEvent('test1')).toBeUndefined();
+            expect(eventContainer?.getEvent('test2')).toBeDefined();
+            eventContainer?.clear();
         });
 
-        test('Multiple events and multiple subscribers for each event should be able to be added and then one of them should be able to be removed.', () => {
+        test('Multiple events and multiple subscribers for each event should be able to be added and then one of them should be able to be removed.', async () => {
             const serviceContainer = ServiceContainer.getInstance();
-            const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
-            eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 1 });
-            eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 2 });
-            eventContainer.addSubscriber('test2', { callbackAsync: async () => {}, order: 1 });
-            eventContainer.addSubscriber('test2', { callbackAsync: async () => {}, order: 2 });
-            eventContainer.removeEvent('test1');
-            expect(eventContainer.getEvent('test1')).toBeUndefined();
-            expect(eventContainer.getEvent('test2')).toBeDefined();
-            eventContainer.clear();
+            const eventContainer = await serviceContainer.resolveAsync<EventContainer>(EventContainer);
+            eventContainer?.addSubscriber('test1', { callbackAsync: async () => {}, order: 1 });
+            eventContainer?.addSubscriber('test1', { callbackAsync: async () => {}, order: 2 });
+            eventContainer?.addSubscriber('test2', { callbackAsync: async () => {}, order: 1 });
+            eventContainer?.addSubscriber('test2', { callbackAsync: async () => {}, order: 2 });
+            eventContainer?.removeEvent('test1');
+            expect(eventContainer?.getEvent('test1')).toBeUndefined();
+            expect(eventContainer?.getEvent('test2')).toBeDefined();
+            eventContainer?.clear();
         });
 
-        test('Multiple events should be able to be added and then multiple subscribers should be able to be added to each event. Then some of the subscribers should be able to be removed.', () => {
+        test('Multiple events should be able to be added and then multiple subscribers should be able to be added to each event. Then some of the subscribers should be able to be removed.', async () => {
             const serviceContainer = ServiceContainer.getInstance();
-            const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
-            eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 1 });
-            eventContainer.addSubscriber('test1', { callbackAsync: async () => {}, order: 2 });
-            eventContainer.addSubscriber('test2', { callbackAsync: async () => {}, order: 1 });
-            eventContainer.addSubscriber('test2', { callbackAsync: async () => {}, order: 2 });
-            eventContainer.removeSubscriber('test1', 1);
-            eventContainer.removeSubscriber('test2', 2);
-            expect(eventContainer.getEvent('test1')).toBeDefined();
-            expect(eventContainer.getEvent('test1')?.subscribers.length).toBe(1);
-            expect(eventContainer.getEvent('test2')).toBeDefined();
-            expect(eventContainer.getEvent('test2')?.subscribers.length).toBe(1);
-            eventContainer.clear();
+            const eventContainer = await serviceContainer.resolveAsync<EventContainer>(EventContainer);
+            eventContainer?.addSubscriber('test1', { callbackAsync: async () => {}, order: 1 });
+            eventContainer?.addSubscriber('test1', { callbackAsync: async () => {}, order: 2 });
+            eventContainer?.addSubscriber('test2', { callbackAsync: async () => {}, order: 1 });
+            eventContainer?.addSubscriber('test2', { callbackAsync: async () => {}, order: 2 });
+            eventContainer?.removeSubscriber('test1', 1);
+            eventContainer?.removeSubscriber('test2', 2);
+            expect(eventContainer?.getEvent('test1')).toBeDefined();
+            expect(eventContainer?.getEvent('test1')?.subscribers.length).toBe(1);
+            expect(eventContainer?.getEvent('test2')).toBeDefined();
+            expect(eventContainer?.getEvent('test2')?.subscribers.length).toBe(1);
+            eventContainer?.clear();
         });
 
         test('An event should be able to be added and multiple subscribers should be able to be added to this event. Then the event should be triggered and it should be checked that the subscribers are working.', async () => {
             const serviceContainer = ServiceContainer.getInstance();
-            const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
-            eventContainer.addSubscriber('test', {
+            const eventContainer = await serviceContainer.resolveAsync<EventContainer>(EventContainer);
+            eventContainer?.addSubscriber('test', {
                 callbackAsync: async (payload: HandlerResponse) => {
                     payload.result = 'test - subscriber1';
                 },
                 order: 1,
             });
-            eventContainer.addSubscriber('test', {
+            eventContainer?.addSubscriber('test', {
                 callbackAsync: async (payload: HandlerResponse) => {
                     payload.result += ' > test - subscriber2';
                 },
@@ -218,23 +218,23 @@ describe('EventContainer', () => {
             });
 
             const payload: HandlerResponse = {} as HandlerResponse;
-            await eventContainer.triggerAsync('test', payload);
+            await eventContainer?.triggerAsync('test', payload);
 
             expect(payload.result).toBe('test - subscriber1 > test - subscriber2');
-            eventContainer.clear();
+            eventContainer?.clear();
         });
 
         test('Performance Test: 1000 events should be added and 1000 subscribers should be added to each event. Then all events should be triggered at the same time and it should be checked that the subscribers are working.', async () => {
             const serviceContainer = ServiceContainer.getInstance();
-            const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
+            const eventContainer = await serviceContainer.resolveAsync<EventContainer>(EventContainer);
             for (let i = 0; i < 1000; i++) {
-                eventContainer.addSubscriber(`test${i}`, {
+                eventContainer?.addSubscriber(`test${i}`, {
                     callbackAsync: async (payload: HandlerResponse) => {
                         payload.result = `test${i} - subscriber1`;
                     },
                     order: 1,
                 });
-                eventContainer.addSubscriber(`test${i}`, {
+                eventContainer?.addSubscriber(`test${i}`, {
                     callbackAsync: async (payload: HandlerResponse) => {
                         payload.result += ` > test${i} - subscriber2`;
                     },
@@ -244,18 +244,18 @@ describe('EventContainer', () => {
 
             const payload: HandlerResponse = {} as HandlerResponse;
             for (let i = 0; i < 1000; i++) {
-                await eventContainer.triggerAsync(`test${i}`, payload);
+                await eventContainer?.triggerAsync(`test${i}`, payload);
             }
 
             expect(payload.result).toBe(`test999 - subscriber1 > test999 - subscriber2`);
-            eventContainer.clear();
+            eventContainer?.clear();
         }, 10000);
     });
 
     describe('Decorator tests', () => {
-        test('An event should be subscribed using a decorator.', () => {
+        test('An event should be subscribed using a decorator.', async () => {
             const serviceContainer = ServiceContainer.getInstance();
-            const eventContainer = serviceContainer.resolve<EventContainer>(EventContainer);
+            const eventContainer = await serviceContainer.resolveAsync<EventContainer>(EventContainer);
 
             class TestClass {
                 @EventHandler({ event: 'test' })
@@ -264,9 +264,11 @@ describe('EventContainer', () => {
                 }
             }
 
-            expect(eventContainer.getEvent('test')).toBeDefined();
-            expect(eventContainer.getEvent('test')?.subscribers.length).toBe(1);
-            eventContainer.clear();
+            await new Promise<void>((resolve) => setTimeout(resolve, 1000));
+
+            expect(eventContainer?.getEvent('test')).toBeDefined();
+            expect(eventContainer?.getEvent('test')?.subscribers.length).toBe(1);
+            eventContainer?.clear();
         });
     });
 });

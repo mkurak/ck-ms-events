@@ -1,6 +1,6 @@
 import 'reflect-metadata';
 import { ServiceContainer } from 'ck-ms-di';
-import { EventContainer } from '../EventContainer';
+import { EventContainer, Subscriber } from '../EventContainer';
 
 export interface EventHandlerOptions {
     event: string;
@@ -9,13 +9,13 @@ export interface EventHandlerOptions {
 
 export function EventHandler(options: EventHandlerOptions) {
     return function (target: any, propertyKey: any, descriptor?: PropertyDescriptor) {
-        const services = ServiceContainer.getInstance();
-        const events = services.resolve<EventContainer>(EventContainer);
-        const event = events.getEvent(options.event);
+        (async () => {
+            const services = ServiceContainer.getInstance();
+            const events = await services.resolveAsync<EventContainer>(EventContainer);
 
-        events.addSubscriber(options.event, {
-            callbackAsync: descriptor?.value ?? target[propertyKey],
-            order: options.order ?? (event ? event.subscribers.length + 1 : 1),
-        });
+            events?.addSubscriber(options.event, {
+                callbackAsync: descriptor?.value ?? target[propertyKey],
+            } as Subscriber);
+        })();
     };
 }
